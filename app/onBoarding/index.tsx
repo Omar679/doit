@@ -50,7 +50,7 @@ const Onboarding = ({}) => {
   };
   const endOnboarding = async () => {
     await AsyncStorage.setItem("isFirstLaunch", "false");
-    router.replace("./screewnTEst");
+    router.replace("./HomeScreen");
     setScreenIndex(0);
   };
 

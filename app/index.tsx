@@ -1,12 +1,11 @@
 import { Button, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Stack } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Onboarding from "./onBoarding";
-import ScreewnTEst from "./screewnTEst";
+import HomeScreen from "./HomeScreen";
 
-const HomePage = () => {
+const App = () => {
   const [isFirstLaunch, setIsFirstLaunch] = useState<null | boolean>(null);
   useEffect(() => {
     async function checkFirstLaunch() {
@@ -29,17 +28,18 @@ const HomePage = () => {
   {
   }
   return (
-    <>
-      <Stack.Screen />
-      {isFirstLaunch ? (
-        <Onboarding />
-      ) : (
-        <ScreewnTEst />
-      )}
-    </>
+    // <>
+    //   <Stack.Screen />
+    //   {isFirstLaunch ? (
+    //     <Onboarding />
+    //   ) : (
+    //     <HomeScreen />
+    //   )}
+    // </>
+    <Onboarding />
   );
 };
 
-export default HomePage;
+export default App;
 
 const styles = StyleSheet.create({});
