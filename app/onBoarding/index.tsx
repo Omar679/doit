@@ -1,6 +1,19 @@
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Entypo } from "@expo/vector-icons";
+import colors from "../../assets/colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Route } from "expo-router/build/Route";
+import { Router } from "react-router-native";
+import { router } from "expo-router";
 
 const onBoardinData = [
   {
@@ -18,39 +31,53 @@ const onBoardinData = [
   },
   {
     id: "3",
-    title: "The Secret to Getting Things Done",
-    subtitle: "Let's do this!",
+    title: "Let's do this!",
+    subtitle: "The Secret to Getting Things Done",
     image: require("../../assets/onboarding/image3.png"),
   },
 ];
 
-const Onboarding = () => {
-  const [screenIndex, setscreenIndex] = useState(0);
+const Onboarding = ({}) => {
+  const [screenIndex, setScreenIndex] = useState(2);
   const data = onBoardinData[screenIndex];
+
+  const onContinue = () => {
+    if (screenIndex >= onBoardinData.length - 1) {
+      endOnboarding();
+    } else {
+      setScreenIndex(screenIndex + 1);
+    }
+  };
+  const endOnboarding = async () => {
+    await AsyncStorage.setItem("isFirstLaunch", "false");
+    router.replace("./screewnTEst");
+    setScreenIndex(0);
+  };
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Image
-        source={data.image}
-        style={{
-          width: 100,
-          aspectRatio: 1,
-          resizeMode: "contain",
-          backgroundColor: "#414141",
-        }}
-      />
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: "red",
-          borderTopStartRadius: 50,
-          borderTopEndRadius: 50,
-          top: -20,
-          alignItems: "center",
-          justifyContent:'center'
-        }}
-      >
-        <Text>{data.title}</Text>
-        <Text>{data.subtitle}</Text>
+    <SafeAreaView style={styles.container}>
+      <Image source={data.image} style={styles.image} />
+      <View style={styles.textContainer}>
+        <Text style={styles.title}>{data.title}</Text>
+        <Text style={styles.subtitle}>{data.subtitle}</Text>
+      </View>
+
+      <View style={styles.indicatorContainer}>
+        {onBoardinData.map((_, i) => (
+          <View
+            key={i}
+            style={[
+              styles.indicator,
+              { backgroundColor: i == screenIndex ? colors.primary : "grey" },
+            ]}
+          />
+        ))}
+      </View>
+      <View style={styles.navigationContainer}>
+        <Text onPress={endOnboarding}>Skip</Text>
+        <Pressable onPress={onContinue} style={styles.nextContainer}>
+          <Entypo name="chevron-right" size={24} color={colors.white} />
+        </Pressable>
       </View>
     </SafeAreaView>
   );
@@ -58,4 +85,34 @@ const Onboarding = () => {
 
 export default Onboarding;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "space-around",
+    padding: 10,
+  },
+  image: {
+    width: 400,
+    height: 400,
+    // aspectRatio: 1,
+    resizeMode: "contain",
+    backgroundColor: "#fff",
+  },
+  textContainer: { alignItems: "center", gap: 20 },
+  title: { fontSize: 30, fontFamily: "notoBold" },
+  subtitle: { fontSize: 15, fontFamily: "notoBold" },
+  indicatorContainer: { flexDirection: "row", gap: 5 },
+  indicator: {
+    backgroundColor: "gray",
+    width: 10,
+    aspectRatio: 1,
+    borderRadius: 10,
+  },
+  navigationContainer: { flexDirection: "row", gap: 150, alignItems: "center" },
+  nextContainer: {
+    backgroundColor: colors.primary,
+    padding: 15,
+    borderRadius: 15,
+  },
+});

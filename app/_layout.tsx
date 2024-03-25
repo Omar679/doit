@@ -26,6 +26,7 @@ export default function RootLayout() {
       setIsLoaded(true);
     }
   }, [fontsLoaded, fontError]);
+
   const showAnimated = !isLoaded || !sPlashAnimationFinished;
   if (showAnimated) {
     return (
@@ -34,10 +35,13 @@ export default function RootLayout() {
   }
 
   return (
-    // <Animated.View entering={FadeIn.duration(300)} style={{ flex: 1 }}>
-    //   <Stack />
-    // </Animated.View>
-    <Onboarding />
+    <View style={{ flex: 1 }}>
+      <Stack  />
+      {/* <Animated.View entering={FadeIn.duration(300)} style={{ flex: 1 }}>
+     <Stack />
+  </Animated.View> */}
+      {/* <Onboarding /> */}
+    </View>
   );
 }
 
@@ -53,7 +57,7 @@ const Animation = ({
     >
       <LottieView
         onAnimationFinish={(isCanceled) => {
-          console.log("Canceled", isCanceled);
+          // console.log("Canceled", isCanceled);
           if (!isCanceled) {
             setSPlashAnimationFinished(true);
           }
