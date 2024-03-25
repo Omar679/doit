@@ -9,8 +9,7 @@ import { useEffect, useState } from "react";
 import { Stack } from "expo-router";
 import LottieView from "lottie-react-native";
 import { View } from "react-native";
-import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
-import Onboarding from "./onBoarding";
+import Animated, { FadeOut } from "react-native-reanimated";
 
 export default function RootLayout() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -36,11 +35,7 @@ export default function RootLayout() {
 
   return (
     <View style={{ flex: 1 }}>
-      <Stack  />
-      {/* <Animated.View entering={FadeIn.duration(300)} style={{ flex: 1 }}>
-     <Stack />
-  </Animated.View> */}
-      {/* <Onboarding /> */}
+      <Stack screenOptions={{ headerShown: false }} />
     </View>
   );
 }

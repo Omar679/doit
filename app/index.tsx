@@ -1,9 +1,11 @@
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Stack } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Onboarding from "./onBoarding";
 import HomeScreen from "./HomeScreen";
+import colors from "../assets/colors";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const App = () => {
   const [isFirstLaunch, setIsFirstLaunch] = useState<null | boolean>(null);
@@ -28,6 +30,12 @@ const App = () => {
   {
   }
   return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
+      <GestureHandlerRootView>
+
+      <Onboarding />
+      </GestureHandlerRootView>
+    </SafeAreaView>
     // <>
     //   <Stack.Screen />
     //   {isFirstLaunch ? (
@@ -36,7 +44,6 @@ const App = () => {
     //     <HomeScreen />
     //   )}
     // </>
-    <Onboarding />
   );
 };
 

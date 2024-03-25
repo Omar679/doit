@@ -11,9 +11,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Entypo } from "@expo/vector-icons";
 import colors from "../../assets/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Route } from "expo-router/build/Route";
-import { Router } from "react-router-native";
-import { router } from "expo-router";
+import { Stack, router } from "expo-router";
+
+import Animated from "react-native-reanimated";
+import {
+  Directions,
+  Gesture,
+  GestureDetector,
+} from "react-native-gesture-handler";
 
 const onBoardinData = [
   {
@@ -51,16 +56,32 @@ const Onboarding = ({}) => {
   const endOnboarding = async () => {
     await AsyncStorage.setItem("isFirstLaunch", "false");
     router.replace("./HomeScreen");
-    setScreenIndex(0);
   };
+
+  const onBack = () => {
+    if (screenIndex >= 0) {
+      setScreenIndex(screenIndex - 1);
+    }
+  };
+
+  const swipeNext = Gesture.Fling()
+    .direction(Directions.LEFT)
+    .onEnd(onContinue);
+  const swipePrev = Gesture.Fling().direction(Directions.RIGHT).onEnd(onBack);
+  const swipes = Gesture.Simultaneous(swipeNext, swipePrev);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Image source={data.image} style={styles.image} />
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>{data.title}</Text>
-        <Text style={styles.subtitle}>{data.subtitle}</Text>
-      </View>
+      <Stack screenOptions={{ headerShown: false }} />
+      <GestureDetector gesture={swipes} >
+        <View style={{flex:1}}>
+        <Image source={data.image} style={styles.image} />
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>{data.title}</Text>
+          <Text style={styles.subtitle}>{data.subtitle}</Text>
+        </View>
+        </View>
+      </GestureDetector>
 
       <View style={styles.indicatorContainer}>
         {onBoardinData.map((_, i) => (
