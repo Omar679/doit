@@ -13,7 +13,14 @@ import colors from "../../assets/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack, router } from "expo-router";
 
-import Animated from "react-native-reanimated";
+import Animated, {
+  FadeIn,
+  FadeOut,
+  SlideInLeft,
+  SlideInRight,
+  SlideOutLeft,
+  SlideOutRight,
+} from "react-native-reanimated";
 import {
   Directions,
   Gesture,
@@ -43,7 +50,7 @@ const onBoardinData = [
 ];
 
 const Onboarding = ({}) => {
-  const [screenIndex, setScreenIndex] = useState(2);
+  const [screenIndex, setScreenIndex] = useState(0);
   const data = onBoardinData[screenIndex];
 
   const onContinue = () => {
@@ -59,7 +66,7 @@ const Onboarding = ({}) => {
   };
 
   const onBack = () => {
-    if (screenIndex >= 0) {
+    if (screenIndex > 0) {
       setScreenIndex(screenIndex - 1);
     }
   };
@@ -73,13 +80,32 @@ const Onboarding = ({}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Stack screenOptions={{ headerShown: false }} />
-      <GestureDetector gesture={swipes} >
-        <View style={{flex:1}}>
-        <Image source={data.image} style={styles.image} />
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>{data.title}</Text>
-          <Text style={styles.subtitle}>{data.subtitle}</Text>
-        </View>
+      <GestureDetector gesture={swipes}>
+        <View style={{ alignItems: "center" }}>
+          <Animated.Image
+            entering={SlideInRight}
+            exiting={FadeOut}
+            key={data.id}
+            source={data.image}
+            style={styles.image}
+          />
+          <View style={styles.textContainer}>
+            <Animated.Text
+              entering={SlideInRight}
+              exiting={SlideOutLeft}
+              key={data.title}
+              style={styles.title}
+            >
+              {data.title}
+            </Animated.Text>
+            <Animated.Text
+              entering={SlideInRight.delay(100)}
+              key={data.subtitle}
+              style={styles.subtitle}
+            >
+              {data.subtitle}
+            </Animated.Text>
+          </View>
         </View>
       </GestureDetector>
 

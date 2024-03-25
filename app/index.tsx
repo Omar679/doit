@@ -31,18 +31,13 @@ const App = () => {
   }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
-      <GestureHandlerRootView>
-
-      <Onboarding />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <Stack.Screen />
+        {isFirstLaunch ? <Onboarding /> : <HomeScreen />}
       </GestureHandlerRootView>
     </SafeAreaView>
     // <>
-    //   <Stack.Screen />
-    //   {isFirstLaunch ? (
-    //     <Onboarding />
-    //   ) : (
-    //     <HomeScreen />
-    //   )}
+    //
     // </>
   );
 };
